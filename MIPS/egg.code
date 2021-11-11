@@ -1,0 +1,213 @@
+lui     t0,0x8000
+addi    t1,zero,-1
+sw      t1,8(t0)
+lw      v1,0(t0)
+lw      v0,4(t0)
+addi    t1,zero,0
+sll     t3,v1,0x2
+sll     t4,v0,0x2
+addi    t4,t4,4
+addi    t2,t3,0
+:
+COMPARE:
+beq     t1,t3, FINISH_ASM
+nop
+sw      t2,0(t1)
+addiu   t1,t1,4
+addu    t2,t2,t4
+b       COMPARE
+nop
+:
+FINISH_ASM:
+addi    s8,t2,0
+sw      v1,4(s8)
+sw      v0,8(s8)
+sw      zero,12(s8)
+move    s0,zero
+b       FINISH_ASM+0x38
+nop
+lw      v0,12(s8)
+lw      v1,0(v0)
+move    v0,s0
+sll     v0,v0,0x2
+addu    v0,v1,v0
+sw      s0,0(v0)
+addiu   s0,s0,1
+lw      v0,8(s8)
+slt     v0,v0,s0
+beqz    v0,FINISH_ASM+0x1c
+nop
+move    s0,zero
+b       FINISH_ASM+0x70
+nop
+move    v0,s0
+sll     v0,v0,0x2
+lw      v1,12(s8)
+addu    v0,v1,v0
+lw      v0,0(v0)
+sw      zero,0(v0)
+addiu   s0,s0,1
+lw      v0,4(s8)
+slt     v0,s0,v0
+bnez    v0,FINISH_ASM+0x54
+nop
+li      s1,1
+b       FINISH_ASM+0x2b8
+nop
+li      s0,1
+b       FINISH_ASM+0x2a4
+nop
+li      s2,1
+move    s3,s0
+b       FINISH_ASM+0x154
+nop
+addu    v0,s2,s3
+srl     v1,v0,0x1f
+addu    v0,v1,v0
+sra     v0,v0,0x1
+move    s4,v0
+move    v1,s1
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,v1,v0
+sll     v0,v0,0x2
+lw      v1,12(s8)
+addu    v0,v1,v0
+lw      v1,0(v0)
+move    a0,s4
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,a0,v0
+sll     v0,v0,0x2
+addu    v0,v1,v0
+lw      s6,0(v0)
+move    v0,s1
+sll     v0,v0,0x2
+lw      v1,12(s8)
+addu    v0,v1,v0
+lw      v1,0(v0)
+subu    v0,s0,s4
+sll     v0,v0,0x2
+addu    v0,v1,v0
+lw      s5,0(v0)
+slt     v0,s6,s5
+beqz    v0, FINISH_ASM+0x134
+nop
+move    s2,s4
+b       FINISH_ASM+0x154
+nop
+slt     v0,s5,s6
+beqz    v0, FINISH_ASM+0x14c
+nop
+move    s3,s4
+b       FINISH_ASM+0x154
+nop
+move    s2,s4
+move    s3,s4
+addiu   v0,s2,1
+slt     v0,v0,s3
+bnez    v0, FINISH_ASM+0xa8
+nop
+move    v1,s1
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,v1,v0
+sll     v0,v0,0x2
+lw      v1,12(s8)
+addu    v0,v1,v0
+lw      v1,0(v0)
+move    a0,s2
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,a0,v0
+sll     v0,v0,0x2
+addu    v0,v1,v0
+lw      v1,0(v0)
+move    v0,s1
+sll     v0,v0,0x2
+lw      a0,12(s8)
+addu    v0,a0,v0
+lw      a0,0(v0)
+subu    v0,s0,s2
+sll     v0,v0,0x2
+addu    v0,a0,v0
+lw      v0,0(v0)
+sw      v1,32(s8)
+sw      v0,36(s8)
+lw      v0,36(s8)
+lw      a0,32(s8)
+lw      v1,32(s8)
+slt     a0,a0,v0
+movn    v1,v0,a0
+move    a0,s1
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,a0,v0
+sll     v0,v0,0x2
+lw      a0,12(s8)
+addu    v0,a0,v0
+lw      a0,0(v0)
+move    a1,s3
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,a1,v0
+sll     v0,v0,0x2
+addu    v0,a0,v0
+lw      a0,0(v0)
+move    v0,s1
+sll     v0,v0,0x2
+lw      a1,12(s8)
+addu    v0,a1,v0
+lw      a1,0(v0)
+subu    v0,s0,s3
+sll     v0,v0,0x2
+addu    v0,a1,v0
+lw      v0,0(v0)
+sw      a0,24(s8)
+sw      v0,28(s8)
+lw      v0,28(s8)
+lw      a1,24(s8)
+lw      a0,24(s8)
+slt     a1,a1,v0
+movz    v0,a0,a1
+sw      v1,16(s8)
+sw      v0,20(s8)
+lw      v0,20(s8)
+lw      a0,16(s8)
+lw      v1,16(s8)
+slt     a0,v0,a0
+movn    v1,v0,a0
+move    v0,s1
+sll     v0,v0,0x2
+lw      a0,12(s8)
+addu    v0,a0,v0
+lw      a0,0(v0)
+move    v0,s0
+sll     v0,v0,0x2
+addu    v0,a0,v0
+addiu   v1,v1,1
+sw      v1,0(v0)
+addiu   s0,s0,1
+lw      v0,8(s8)
+slt     v0,v0,s0
+beqz    v0, FINISH_ASM+0x98
+nop
+addiu   s1,s1,1
+lw      v0,4(s8)
+slt     v0,s1,v0
+bnez    v0, FINISH_ASM+0x8c
+nop
+lw      v1,4(s8)
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,v1,v0
+sll     v0,v0,0x2
+lw      v1,12(s8)
+addu    v0,v1,v0
+lw      v1,0(v0)
+lw      v0,8(s8)
+sll     v0,v0,0x2
+addu    v0,v1,v0
+lw      v0,0(v0)
+lui     t0,0x8000
+sw      v0,8(t0)
