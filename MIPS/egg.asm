@@ -211,3 +211,7 @@
   400ab8:       8c420000        lw      v0,0(v0)
   400abc:       3c088000        lui     t0,0x8000
   400ac0:       ad020008        sw      v0,8(t0)
+
+00400ac4 <END_TRAP>:
+  400ac4:       1000ffff        b       400ac4 <END_TRAP>
+  400ac8:       00000000        nop

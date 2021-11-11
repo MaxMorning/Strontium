@@ -10,12 +10,12 @@ addi    t4,t4,4
 addi    t2,t3,0
 :
 COMPARE:
-beq     t1,t3, FINISH_ASM
+beq     t1,t3,4007c4 <FINISH_ASM>
 nop
 sw      t2,0(t1)
 addiu   t1,t1,4
 addu    t2,t2,t4
-b       COMPARE
+b       4007a8 <COMPARE>
 nop
 :
 FINISH_ASM:
@@ -24,7 +24,7 @@ sw      v1,4(s8)
 sw      v0,8(s8)
 sw      zero,12(s8)
 move    s0,zero
-b       FINISH_ASM+0x38
+b       4007fc <FINISH_ASM+0x38>
 nop
 lw      v0,12(s8)
 lw      v1,0(v0)
@@ -35,10 +35,10 @@ sw      s0,0(v0)
 addiu   s0,s0,1
 lw      v0,8(s8)
 slt     v0,v0,s0
-beqz    v0,FINISH_ASM+0x1c
+beqz    v0,4007e0 <FINISH_ASM+0x1c>
 nop
 move    s0,zero
-b       FINISH_ASM+0x70
+b       400834 <FINISH_ASM+0x70>
 nop
 move    v0,s0
 sll     v0,v0,0x2
@@ -49,17 +49,17 @@ sw      zero,0(v0)
 addiu   s0,s0,1
 lw      v0,4(s8)
 slt     v0,s0,v0
-bnez    v0,FINISH_ASM+0x54
+bnez    v0,400818 <FINISH_ASM+0x54>
 nop
 li      s1,1
-b       FINISH_ASM+0x2b8
+b       400a7c <FINISH_ASM+0x2b8>
 nop
 li      s0,1
-b       FINISH_ASM+0x2a4
+b       400a68 <FINISH_ASM+0x2a4>
 nop
 li      s2,1
 move    s3,s0
-b       FINISH_ASM+0x154
+b       400918 <FINISH_ASM+0x154>
 nop
 addu    v0,s2,s3
 srl     v1,v0,0x1f
@@ -91,22 +91,22 @@ sll     v0,v0,0x2
 addu    v0,v1,v0
 lw      s5,0(v0)
 slt     v0,s6,s5
-beqz    v0, FINISH_ASM+0x134
+beqz    v0,4008f8 <FINISH_ASM+0x134>
 nop
 move    s2,s4
-b       FINISH_ASM+0x154
+b       400918 <FINISH_ASM+0x154>
 nop
 slt     v0,s5,s6
-beqz    v0, FINISH_ASM+0x14c
+beqz    v0,400910 <FINISH_ASM+0x14c>
 nop
 move    s3,s4
-b       FINISH_ASM+0x154
+b       400918 <FINISH_ASM+0x154>
 nop
 move    s2,s4
 move    s3,s4
 addiu   v0,s2,1
 slt     v0,v0,s3
-bnez    v0, FINISH_ASM+0xa8
+bnez    v0,40086c <FINISH_ASM+0xa8>
 nop
 move    v1,s1
 lui     v0,0x3fff
@@ -190,12 +190,12 @@ sw      v1,0(v0)
 addiu   s0,s0,1
 lw      v0,8(s8)
 slt     v0,v0,s0
-beqz    v0, FINISH_ASM+0x98
+beqz    v0,40085c <FINISH_ASM+0x98>
 nop
 addiu   s1,s1,1
 lw      v0,4(s8)
 slt     v0,s1,v0
-bnez    v0, FINISH_ASM+0x8c
+bnez    v0,400850 <FINISH_ASM+0x8c>
 nop
 lw      v1,4(s8)
 lui     v0,0x3fff
@@ -211,3 +211,7 @@ addu    v0,v1,v0
 lw      v0,0(v0)
 lui     t0,0x8000
 sw      v0,8(t0)
+:
+END_TRAP:
+b       400ac4 <END_TRAP>
+no

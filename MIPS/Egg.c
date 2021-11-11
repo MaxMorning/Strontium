@@ -110,6 +110,8 @@ int main()
     __asm__ volatile (
         "lui $t0, 0x8000\t\n" // t0 is the base addr of I/O
         "sw %[result], 8($t0)\t\n"
+        "END_TRAP:\t\n"
+        "j END_TRAP\t\n"
         :
         : // input
         [result]"r"(dp_array[egg_sum - 1][floor_sum])

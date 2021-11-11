@@ -39,7 +39,7 @@ module SoC (
         .result(result)
     );
 
-    CPU core0(
+    Core core0(
         .clk(clk_cpu),
         .reset(reset),
         .cpu_ena(1'b1),
