@@ -1,7 +1,8 @@
 module DMEM (
     input wire clk,
     input wire we,
-    input wire[31:0] addr,
+    input wire[31:0] ask_addr,
+    input wire[31:0] fetch_addr,
     input wire[31:0] wdata,
     
     output wire[31:0] rdata
@@ -17,7 +18,7 @@ module DMEM (
 
     // mimic Block memory behavior
     reg[31:0] data_array[0:255];
-    wire[31:0] src_rdata = data_array[addr[9:2]];
+    wire[31:0] src_rdata = data_array[ask_addr[9:2]];
 
     reg[31:0] rdata_reg;
 
@@ -25,7 +26,7 @@ module DMEM (
 
     always @(posedge clk) begin
         if (we) begin
-            data_array[addr[9:2]] <= wdata;
+            data_array[ask_addr[9:2]] <= wdata;
         end
 
         rdata_reg <= src_rdata;

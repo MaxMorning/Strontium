@@ -54,7 +54,7 @@ if __name__ == '__main__':
                         
                         if standard[index] != result[index]:
                             print(file_name, " Wrong! @ ", index)
-                            print(result[index - 7:index + 512])
+                            print(result[index:index + 1024])
                             is_wrong = True
                             break
                         

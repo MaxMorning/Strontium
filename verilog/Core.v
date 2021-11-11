@@ -67,8 +67,8 @@ module Core (
     assign exe_mem_rdata = DMEM_rdata;
 
     assign IMEM_raddr = if_pc_out;
-    assign fetch_DMEM_addr = id_mem_ask_addr;
-    assign DMEM_addr = exe_mem_fetch_addr;
+    assign fetch_DMEM_addr = exe_mem_fetch_addr;
+    assign DMEM_addr = id_mem_ask_addr;
     assign DMEM_wdata = id_valid_rt_data;
     assign DMEM_we = id_mem_we;
 
