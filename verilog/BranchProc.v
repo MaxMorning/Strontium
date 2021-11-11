@@ -4,7 +4,7 @@ module BranchProc (
     input wire[31:0] GPR_rt_data, // Src: RegFile.rdata2(ID)
     input wire[31:0] delay_slot_pc, // Src: PC.pc_out(IF)
 
-    output wire is_branch,
+    (* max_fanout = "8" *) output wire is_branch,
     output wire[31:0] branch_pc
 );
     wire is_branch_instr = ~instr[31] & ~instr[29] & instr[28] & ~instr[27];

@@ -10,7 +10,7 @@ module RegFile (
     output wire[31:0] rdata1,
     output wire[31:0] rdata2
 );
-    reg[31:0] array_reg[31:0];
+    (* max_fanout = "4" *) reg[31:0] array_reg[31:0];
     assign rdata1 = array_reg[raddr1];
     assign rdata2 = array_reg[raddr2];
 

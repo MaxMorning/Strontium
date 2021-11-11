@@ -12,22 +12,22 @@ module Core (
     output wire[31:0] DMEM_wdata,
     output wire DMEM_we
 );
-    wire if_id_ena;
-    wire id_exe_ena;
+    (* max_fanout = "4" *) wire if_id_ena;
+    (* max_fanout = "4" *) wire id_exe_ena;
 
     // IF
     wire[31:0] if_pc_out;
     wire[31:0] if_imem_rdata;
 
     // ID
-    wire id_should_branch;
-    wire[31:0] id_branch_pc;
-    wire[1:0] id_ext_select;
-    wire id_GPR_we;
-    wire[4:0] id_GPR_waddr;
-    wire[1:0] id_GPR_wdata_select;
-    wire[31:0] id_pc_out;
-    wire[31:0] id_instr_out;
+    (* max_fanout = "4" *) wire id_should_branch;
+    (* max_fanout = "4" *) wire[31:0] id_branch_pc;
+    (* max_fanout = "4" *) wire[1:0] id_ext_select;
+    (* max_fanout = "4" *) wire id_GPR_we;
+    (* max_fanout = "4" *) wire[4:0] id_GPR_waddr;
+    (* max_fanout = "4" *) wire[1:0] id_GPR_wdata_select;
+    (* max_fanout = "4" *) wire[31:0] id_pc_out;
+    (* max_fanout = "4" *) wire[31:0] id_instr_out;
 
     wire[31:0] id_ori_rs_data;
     wire[31:0] id_ori_rt_data;
@@ -46,8 +46,8 @@ module Core (
     wire[1:0] exe_GPR_wdata_select;
     wire[31:0] exe_pc_out;
 
-    wire[31:0] exe_alu_opr1;
-    wire[31:0] exe_alu_opr2;
+    (* max_fanout = "4" *) wire[31:0] exe_alu_opr1;
+    (* max_fanout = "4" *) wire[31:0] exe_alu_opr2;
     wire[3:0] exe_alu_contorl;
     wire[31:0] exe_alu_result;
 
@@ -55,13 +55,13 @@ module Core (
 
     wire exe_alu_not_change;
 
-    wire[31:0] exe_valid_alu_opr1;
-    wire[31:0] exe_valid_alu_opr2;
+    (* max_fanout = "4" *) wire[31:0] exe_valid_alu_opr1;
+    (* max_fanout = "4" *) wire[31:0] exe_valid_alu_opr2;
 
     wire[31:0] exe_mem_fetch_addr;
     wire[31:0] exe_mem_rdata;
 
-    wire[31:0] exe_GPR_wdata;
+    (* max_fanout = "4" *) wire[31:0] exe_GPR_wdata;
 
     assign if_imem_rdata = IMEM_rdata;
     assign exe_mem_rdata = DMEM_rdata;

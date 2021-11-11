@@ -16,8 +16,8 @@ module ID_EXE_reg (
     input wire[31:0] id_mem_ask_addr,
 
 
-    output reg[31:0] exe_alu_opr1_out,
-    output reg[31:0] exe_alu_opr2_out,
+    (* max_fanout = "8" *) output reg[31:0] exe_alu_opr1_out,
+    (* max_fanout = "8" *) output reg[31:0] exe_alu_opr2_out,
     output wire[3:0] exe_alu_contorl,
     output reg[31:0] exe_mem_fetch_addr,
     output reg exe_GPR_we,

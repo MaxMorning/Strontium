@@ -5,7 +5,7 @@ module PC (
 
     input wire[31:0] pc_in,
 
-    output reg[31:0] pc_out
+    (* max_fanout = "4" *) output reg[31:0] pc_out
 );
     
     always @(posedge clk or negedge reset) begin

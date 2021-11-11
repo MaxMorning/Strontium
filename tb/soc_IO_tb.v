@@ -27,8 +27,8 @@ module soc_tb();
 //        $dumpvars(5);
 
         reset = 0;
-        opr1 = 3;
-        opr2 = 15;
+        opr1 = 62;
+        opr2 = 125;
 
 
         #6
