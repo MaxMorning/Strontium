@@ -28,7 +28,7 @@ module DMEM (
 
     bram bram_inst (
         .clka(clk),    // input wire clka
-        .ena(1'b1),      // input wire ena
+        // .ena(1'b1),      // input wire ena
         .wea(bram_we),      // input wire [0 : 0] wea
         .addra(ask_addr[17:2]),  // input wire [13 : 0] addra
         .dina(wdata),    // input wire [31 : 0] dina
