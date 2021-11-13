@@ -19,9 +19,6 @@ module Core (
     wire[31:0] if_pc_out;
     wire[31:0] if_imem_rdata;
 
-    wire[31:0] if_ori_rs_data;
-    wire[31:0] if_ori_rt_data;
-
     // ID
     (* max_fanout = "4" *) wire id_should_branch;
     (* max_fanout = "4" *) wire[31:0] id_branch_pc;
@@ -97,20 +94,6 @@ module Core (
         .pc_out(if_pc_out)
     );
 
-    RegFile gpr_inst(
-        .clk(clk),
-        .reset(reset),
-        .we(exe_GPR_we & ~exe_alu_not_change),
-        .raddr1(if_imem_rdata[25:21]),
-        .raddr2(if_imem_rdata[20:16]),
-
-        .waddr(exe_GPR_waddr),
-        .wdata(exe_GPR_wdata),
-
-        .rdata1(if_ori_rs_data),
-        .rdata2(if_ori_rt_data)
-    );
-
     // ID
     IF_ID_reg if_id_reg_inst(
         .clk(clk),
@@ -120,18 +103,27 @@ module Core (
         .if_pc_in(if_pc_out),
         .if_instr_in(if_imem_rdata),
 
-        .if_ori_rs_data(if_ori_rs_data),
-        .if_ori_rt_data(if_ori_rt_data),
-
         .ExtSelect_out(id_ext_select),
         .id_GPR_we(id_GPR_we),
         .id_GPR_waddr(id_GPR_waddr),
         .id_GPR_wdata_select(id_GPR_wdata_select),
         .id_mem_we(id_mem_we),
-        .id_ori_rs_data(id_ori_rs_data),
-        .id_ori_rt_data(id_ori_rt_data),
         .id_pc_out(id_pc_out),
         .id_instr_out(id_instr_out)
+    );
+
+    RegFile gpr_inst(
+        .clk(clk),
+        .reset(reset),
+        .we(exe_GPR_we & ~exe_alu_not_change),
+        .raddr1(id_instr_out[25:21]),
+        .raddr2(id_instr_out[20:16]),
+
+        .waddr(exe_GPR_waddr),
+        .wdata(exe_GPR_wdata),
+
+        .rdata1(id_ori_rs_data),
+        .rdata2(id_ori_rt_data)
     );
 
     ImmExt imm_ext_inst(

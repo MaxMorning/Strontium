@@ -11,13 +11,8 @@ module RegFile (
     output wire[31:0] rdata2
 );
     (* max_fanout = "4" *) reg[31:0] array_reg[31:0];
-    wire[31:0] rdata1_ori = array_reg[raddr1];
-    wire[31:0] rdata2_ori = array_reg[raddr2];
-
-    // through read
-    wire waddr_not_zero = we & (| waddr);
-    assign rdata1 = ((waddr == raddr1) & waddr_not_zero) ? wdata : rdata1_ori;
-    assign rdata2 = ((waddr == raddr2) & waddr_not_zero) ? wdata : rdata2_ori;
+    assign rdata1 = array_reg[raddr1];
+    assign rdata2 = array_reg[raddr2];
 
     integer i;
     always @(posedge clk or negedge reset) begin
@@ -28,6 +23,9 @@ module RegFile (
         end
         else if (we && waddr != 4'b0000) begin
             array_reg[waddr] <= wdata;
+        end
+        else begin
+            array_reg[0] <= 32'h0;
         end
     end
 endmodule
