@@ -4,12 +4,16 @@ module IF_ID_reg (
     input wire ena, // Src: PipelineController.if_id_ena
     input wire[31:0] if_pc_in, // Src: PC.pc_out(IF)
     input wire[31:0] if_instr_in, // Src: IMEM.spo(IF)
+    input wire[31:0] if_ori_rs_data,
+    input wire[31:0] if_ori_rt_data,
 
     output wire[1:0] ExtSelect_out,
     output wire id_GPR_we,
     output wire[4:0] id_GPR_waddr,
     output wire[1:0] id_GPR_wdata_select,
     output wire id_mem_we,
+    output reg[31:0] id_ori_rs_data,
+    output reg[31:0] id_ori_rt_data,
     output reg[31:0] id_pc_out,
     output reg[31:0] id_instr_out
 );
@@ -18,10 +22,14 @@ module IF_ID_reg (
         if (!reset) begin
             id_pc_out <= 32'h00000000;
             id_instr_out <= 32'h00000000;
+            id_ori_rs_data <= 0;
+            id_ori_rt_data <= 0;
         end
         else if (ena) begin
             id_pc_out <= if_pc_in;
             id_instr_out <= if_instr_in;
+            id_ori_rs_data <= if_ori_rs_data;
+            id_ori_rt_data <= if_ori_rt_data;
         end
     end
 
