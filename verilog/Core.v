@@ -55,8 +55,6 @@ module Core (
 
     wire exe_alu_not_change;
 
-    (* max_fanout = "4" *) wire[31:0] exe_valid_alu_opr1;
-    (* max_fanout = "4" *) wire[31:0] exe_valid_alu_opr2;
 
     wire[31:0] exe_mem_fetch_addr;
     wire[31:0] exe_mem_rdata;
