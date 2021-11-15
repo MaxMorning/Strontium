@@ -4,7 +4,10 @@ module SoC (
     input wire[7:0] opr2,
     input wire reset,
 
-    output wire[15:0] result
+    output wire[15:0] result,
+    
+    output wire[7:0] o_seg,
+    output wire[7:0] o_sel
 );
 
     wire clk_cpu;
@@ -58,5 +61,14 @@ module SoC (
         .clk_in1(base_clk),
         .clk_out1(clk_cpu),
         .resetn(reset)
+    );
+
+    seg7x16 seg7_inst(
+        .clk(base_clk),
+        .reset(reset),
+        .cs(1'b1),
+        .i_data({16'h0000, result}),
+        .o_seg(o_seg),
+        .o_sel(o_sel)
     );
 endmodule
