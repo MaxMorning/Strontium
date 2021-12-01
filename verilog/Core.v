@@ -2,6 +2,7 @@ module Core (
     input wire clk,
     input wire reset,
     input wire cpu_ena,
+    input wire pause,
 
     input wire[31:0] IMEM_rdata,
     input wire[31:0] DMEM_rdata,
@@ -74,7 +75,7 @@ module Core (
     PipelineController pipeline_ctrl_inst(
         .clk(clk),
         .reset(reset),
-        .ena(cpu_ena),
+        .ena(cpu_ena & ~pause),
 
         .if_id_ena(if_id_ena),
         .id_exe_ena(id_exe_ena)
@@ -85,7 +86,7 @@ module Core (
     PC pc_inst(
         .clk(clk),
         .reset(reset),
-        .we(cpu_ena),
+        .we(cpu_ena & ~pause),
 
         .pc_in(id_should_branch ? id_branch_pc : if_pc_out + 4),
 
@@ -96,7 +97,7 @@ module Core (
     IF_ID_reg if_id_reg_inst(
         .clk(clk),
         .reset(reset),
-        .ena(if_id_ena),
+        .ena(if_id_ena & ~pause),
 
         .if_pc_in(if_pc_out),
         .if_instr_in(if_imem_rdata),
@@ -168,7 +169,7 @@ module Core (
     ID_EXE_reg id_exe_reg_inst(
         .clk(clk),
         .reset(reset),
-        .ena(id_exe_ena),
+        .ena(id_exe_ena & ~pause),
 
         .id_instr_in(id_instr_out),
         .id_pc_in(id_pc_out),

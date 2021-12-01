@@ -3,7 +3,7 @@ module soc_tb();
     reg clk;
     reg reset;
     reg system_ena;
-    reg interrupt;
+    reg pause;
     wire[31:0] inst;
     wire[31:0] pc;
 
@@ -33,7 +33,7 @@ module soc_tb();
         .clk(clk),
         .reset(reset),
         .system_ena(system_ena),
-        .interrupt(interrupt)
+        .pause(pause)
     );
 
     assign pc = soc.core0.exe_pc_out;
@@ -55,11 +55,28 @@ module soc_tb();
         fout = $fopen("./MIPS/WORKSPACE/result.txt", "w+");
         reset = 0;
         system_ena = 1;
-        interrupt = 0;
+        pause = 0;
         #3
         reset = 1;
 
-        #29;
+        #19;
+
+        for (check_loop = 0; check_loop < 16; check_loop = check_loop + 1) begin
+            #10;
+            $fdisplay(fout, "pc: %h", pc);
+            $fdisplay(fout, "instr: %h", inst);
+
+            for (i = 0; i < 32; i = i + 1) begin
+                $fdisplay(fout, "regfile%d: %h", i, soc.core0.gpr_inst.array_reg[i]);
+            end
+        end
+
+        pause = 1;
+
+        #302
+        pause = 0;
+
+        #10
         for (check_loop = 0; check_loop < 512; check_loop = check_loop + 1) begin
             $fdisplay(fout, "pc: %h", pc);
             $fdisplay(fout, "instr: %h", inst);

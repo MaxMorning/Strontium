@@ -22,7 +22,7 @@ module PipelineController (
         if (!reset) begin
             pipeline_status <= 2'b01;
         end
-        else begin
+        else if (ena) begin
             pipeline_status[0] <= ena;
             pipeline_status[1] <= pipeline_status[0];
         end

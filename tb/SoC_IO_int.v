@@ -1,9 +1,14 @@
 module SoC (
-    input wire clk,
+    input wire base_clk,
+    input wire[15:0] opr,
     input wire reset,
-    input wire system_ena,
-    input wire pause
+    input wire interrupt,
+    
+    output wire[7:0] o_seg,
+    output wire[7:0] o_sel
 );
+
+    wire clk_cpu;
 
     wire[31:0] IMEM_rdata;
     wire[31:0] DMEM_rdata;
@@ -14,6 +19,8 @@ module SoC (
     wire[31:0] DMEM_wdata;
     wire DMEM_we;
 
+    wire[31:0] result;
+
     IMEM imem_inst(
         .a(IMEM_raddr[31:2]),
 
@@ -22,20 +29,23 @@ module SoC (
 
     
     DMEM dmem_inst(
-        .clk(clk),
+        .clk(clk_cpu),
         .we(DMEM_we),
         .ask_addr(DMEM_addr),
         .fetch_addr(fetch_DMEM_addr),
         .wdata(DMEM_wdata),
 
-        .rdata(DMEM_rdata)
+        .rdata(DMEM_rdata),
+
+        .opr(opr),
+        .result(result)
     );
 
     Core core0(
-        .clk(clk),
-        .reset(reset),
-        .cpu_ena(system_ena),
-        .pause(pause),
+        .clk(clk_cpu),
+        .reset(~reset),
+        .cpu_ena(1'b1),
+        .pause(interrupt),
 
         .IMEM_rdata(IMEM_rdata),
         .DMEM_rdata(DMEM_rdata),
@@ -47,4 +57,18 @@ module SoC (
         .DMEM_we(DMEM_we)
     );
     
+    clock clock_inst(
+        .clk_in1(base_clk),
+        .clk_out1(clk_cpu),
+        .resetn(~reset)
+    );
+
+    seg7x16 seg7_inst(
+        .clk(base_clk),
+        .reset(reset),
+        .cs(1'b1),
+        .i_data(result),
+        .o_seg(o_seg),
+        .o_sel(o_sel)
+    );
 endmodule
