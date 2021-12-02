@@ -22,7 +22,7 @@ int main()
 
         "addi $s8, $t2, 0x0\t\n" // set s8 as stack pointer (GCC likes it)
         : // output
-        [m_cnt]"=r"(m),
+        [m_cnt]"=r"(m)
         : // input
         :
         "memory", "$t0", "$t1" // destroy
