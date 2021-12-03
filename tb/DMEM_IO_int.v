@@ -35,7 +35,7 @@ module DMEM (
 
     always @(posedge clk) begin
         if (we) begin
-            if (ask_addr[31] & ask_addr[3]) begin
+            if (ask_addr[31] & ask_addr[2]) begin
                 display_result <= wdata[15:0];
             end
         end

@@ -1,16 +1,17 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
-    int m;
-    int* a;
-    int* b;
-    int* c;
-    int* d;
+    register int m;
+    register int* a;
+    register int* b;
+    register int* c;
+    register int* d;
 #ifdef EMBEDDED
 
     // input from embedded I/O
-    // Memory mapping : 
+    // Memory mapping :
     // 0x8000 0000  m
     // 0x8000 0004  d[m]
     // 0x0000 0000  addr of a[0]
@@ -35,39 +36,39 @@ int main()
 #else
     scanf("%d", &m);
 
-    a = malloc(m * sizeof(int));
-    b = malloc(m * sizeof(int));
-    c = malloc(m * sizeof(int));
-    d = malloc(m * sizeof(int));
+    a = static_cast<int *>(malloc(m * sizeof(int)));
+    b = static_cast<int *>(malloc(m * sizeof(int)));
+    c = static_cast<int *>(malloc(m * sizeof(int)));
+    d = static_cast<int *>(malloc(m * sizeof(int)));
 
 #endif
 
     a[0] = 0;
     b[0] = 1;
 
-    for (int i = 1; i < m; ++i) {
+    for (register int i = 1; i < m; ++i) {
         a[i] = a[i - 1] + i;
         b[i] = b[i - 1] + 3 * i;
     }
 
-    for (int i = 0; i <= 19; ++i) {
+    for (register int i = 0; i <= 19 && i < m; ++i) {
         c[i] = a[i];
         d[i] = b[i];
     }
 
-    for (int i = 20; i <= 39; ++i) {
+    for (register int i = 20; i <= 39 && i < m; ++i) {
         c[i] = a[i] + b[i];
     }
 
-    for (int i = 40; i < m; ++i) {
+    for (register int i = 40; i < m && i < m; ++i) {
         c[i] = a[i] * b[i];
     }
 
-    for (int i = 20; i <= 39; ++i) {
+    for (register int i = 20; i <= 39 && i < m; ++i) {
         d[i] = a[i] * c[i];
     }
 
-    for (int i = 40; i < m; ++i) {
+    for (register int i = 40; i < m; ++i) {
         d[i] = c[i] * b[i];
     }
 
@@ -84,6 +85,9 @@ int main()
         : "$t0" // destroy
     );
 #else
+    for (int i = 0; i < m; ++i) {
+        printf("%d: a\t%d\t\tb\t%d\t\tc\t%d\t\td\t%d\t\t\n", i, a[i], b[i], c[i], d[i]);
+    }
     printf("%d\n", d[m - 1]);
 
     free(d);

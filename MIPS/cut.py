@@ -1,8 +1,8 @@
 if __name__ == '__main__':
-    with open(r"egg.asm", 'r') as file_in:
+    with open(r"array_asm.txt", 'r') as file_in:
         lines = file_in.readlines()
         file_out = open(r"hex.txt", 'w')
-        code_out = open(r"egg.code", 'w')
+        code_out = open(r"arr.code", 'w')
         for line in lines:
             if len(line) < 1:
                 continue

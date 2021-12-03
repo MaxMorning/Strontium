@@ -1,0 +1,182 @@
+lui     t0,0x8000
+addi    t1,zero,-1
+sw      t1,4(t0)
+lw      v0,0(t0)
+addi    s8,v0,0
+sll     s8,s8,0x4
+move    s1,v0
+move    s2,zero
+move    v0,s1
+sll     v0,v0,0x2
+addu    s0,s2,v0
+move    v0,s1
+sll     v0,v0,0x2
+addu    s4,s0,v0
+move    v0,s1
+sll     v0,v0,0x2
+addu    s5,s4,v0
+sw      zero,0(s2)
+li      v0,1
+sw      v0,0(s0)
+li      s3,1
+b       4007d0 <main+0xf0>
+nop
+move    v1,s3
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,v1,v0
+sll     v0,v0,0x2
+addu    v0,s2,v0
+lw      v1,0(v0)
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s2,v0
+addu    v1,s3,v1
+sw      v1,0(v0)
+move    v1,s3
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,v1,v0
+sll     v0,v0,0x2
+addu    v0,s0,v0
+lw      a0,0(v0)
+move    v0,s3
+sll     v0,v0,0x1
+addu    v1,v0,s3
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s0,v0
+addu    v1,a0,v1
+sw      v1,0(v0)
+addiu   s3,s3,1
+slt     v0,s3,s1
+bnez    v0,400760 <main+0x80>
+nop
+move    s3,zero
+b       40082c <main+0x14c>
+nop
+move    v0,s3
+sll     v0,v0,0x2
+addu    v1,s2,v0
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s4,v0
+lw      v1,0(v1)
+sw      v1,0(v0)
+move    v0,s3
+sll     v0,v0,0x2
+addu    v1,s0,v0
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s5,v0
+lw      v1,0(v1)
+sw      v1,0(v0)
+addiu   s3,s3,1
+slti    v0,s3,20
+beqz    v0,400844 <main+0x164>
+nop
+slt     v0,s3,s1
+bnez    v0,4007e8 <main+0x108>
+nop
+li      s3,20
+b       400888 <main+0x1a8>
+nop
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s2,v0
+lw      a0,0(v0)
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s0,v0
+lw      v1,0(v0)
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s4,v0
+addu    v1,a0,v1
+sw      v1,0(v0)
+addiu   s3,s3,1
+slti    v0,s3,40
+beqz    v0,4008a0 <main+0x1c0>
+nop
+slt     v0,s3,s1
+bnez    v0,400850 <main+0x170>
+nop
+li      s3,40
+b       4008e4 <main+0x204>
+nop
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s2,v0
+lw      a0,0(v0)
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s0,v0
+lw      v1,0(v0)
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s4,v0
+mul     v1,a0,v1
+sw      v1,0(v0)
+addiu   s3,s3,1
+slt     v0,s3,s1
+beqz    v0,4008fc <main+0x21c>
+nop
+slt     v0,s3,s1
+bnez    v0,4008ac <main+0x1cc>
+nop
+li      s3,20
+b       400940 <main+0x260>
+nop
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s2,v0
+lw      a0,0(v0)
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s4,v0
+lw      v1,0(v0)
+move    v0,s3
+sll     v0,v0,0x2
+addu    v0,s5,v0
+mul     v1,a0,v1
+sw      v1,0(v0)
+addiu   s3,s3,1
+slti    v0,s3,40
+beqz    v0,400958 <main+0x278>
+nop
+slt     v0,s3,s1
+bnez    v0,400908 <main+0x228>
+nop
+li      s2,40
+b       40099c <main+0x2bc>
+nop
+move    v0,s2
+sll     v0,v0,0x2
+addu    v0,s4,v0
+lw      a0,0(v0)
+move    v0,s2
+sll     v0,v0,0x2
+addu    v0,s0,v0
+lw      v1,0(v0)
+move    v0,s2
+sll     v0,v0,0x2
+addu    v0,s5,v0
+mul     v1,a0,v1
+sw      v1,0(v0)
+addiu   s2,s2,1
+slt     v0,s2,s1
+bnez    v0,400964 <main+0x284>
+nop
+move    v1,s1
+lui     v0,0x3fff
+ori     v0,v0,0xffff
+addu    v0,v1,v0
+sll     v0,v0,0x2
+addu    v0,s5,v0
+lw      v0,0(v0)
+lui     t0,0x8000
+sw      v0,4(t0)
+:
+END_TRAP:
+b       4009cc <END_TRAP>
+no
