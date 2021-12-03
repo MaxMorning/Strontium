@@ -17,10 +17,11 @@ int main()
     __asm__ (
         "lui $t0, 0x8000\t\n" // t0 is the base addr of I/O
         "addi $t1, $0, 0xffff\t\n"
-        "sw $t1, 0x8($t0)\t\n" // display ffff when calc not done
+        "sw $t1, 0x4($t0)\t\n" // display ffff when calc not done
         "lw %[m_cnt], 0($t0)\t\n"
 
-        "addi $s8, $t2, 0x0\t\n" // set s8 as stack pointer (GCC likes it)
+        "addi $s8, %[m_cnt], 0x0\t\n"
+        "sll $s8, $s8, 4\t\n" // set s8 as stack pointer (GCC likes it)
         : // output
         [m_cnt]"=r"(m)
         : // input
