@@ -29,7 +29,7 @@ module ID_EXE_reg (
 
     reg[31:0] exe_instr_out;
     wire alu_opr1_select = ~id_instr_in[29] & ~id_instr_in[28] & ~id_instr_in[27] & ~id_instr_in[26] & ~id_instr_in[5] & ~id_instr_in[3] & ~id_instr_in[2];
-    wire alu_opr2_select = (id_instr_in[29] | id_instr_in[31]);
+    wire alu_opr2_select = ~id_instr_in[30] & (id_instr_in[29] | id_instr_in[31]);
 
     always @(posedge clk or negedge reset) begin
         if (!reset) begin

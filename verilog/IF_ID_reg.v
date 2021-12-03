@@ -40,15 +40,15 @@ module IF_ID_reg (
 
     wire[1:0] GPR_waddr_select;
     assign GPR_waddr_select[1] = ~id_instr_out[31] & ~id_instr_out[29] & ~id_instr_out[28] & id_instr_out[27] & id_instr_out[26];
-    assign GPR_waddr_select[0] = ~id_instr_out[29] & ~id_instr_out[28] & ~id_instr_out[27] & ~id_instr_out[26];
+    assign GPR_waddr_select[0] = id_instr_out[30] | (~id_instr_out[29] & ~id_instr_out[28] & ~id_instr_out[27] & ~id_instr_out[26]);
 
     assign id_GPR_waddr = GPR_waddr_select[1] ? // 11 10
                             5'b11111
                             : // 01 00
                             (GPR_waddr_select[0] ? id_instr_out[15:11] : id_instr_out[20:16]);
 
-    assign id_GPR_wdata_select[1] = ~id_instr_out[31] & ~id_instr_out[29] & ~id_instr_out[28] & id_instr_out[27] & id_instr_out[26];
-    assign id_GPR_wdata_select[0] = id_instr_out[29] | id_instr_out[28] | ~id_instr_out[27] | ~id_instr_out[26];
+    assign id_GPR_wdata_select[1] = id_instr_out[30] | (~id_instr_out[31] & ~id_instr_out[29] & ~id_instr_out[28] & id_instr_out[27] & id_instr_out[26]);
+    assign id_GPR_wdata_select[0] = id_instr_out[30] | id_instr_out[29] | id_instr_out[28] | ~id_instr_out[27] | ~id_instr_out[26];
 
     assign id_mem_we = ena & id_instr_out[31] & id_instr_out[29];
 endmodule

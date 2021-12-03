@@ -11,7 +11,9 @@ module Core (
     output wire[31:0] DMEM_addr,
     output wire[31:0] fetch_DMEM_addr,
     output wire[31:0] DMEM_wdata,
-    output wire DMEM_we
+    output wire DMEM_we,
+
+    output wire[31:0] GPR_wb_data
 );
     (* max_fanout = "4" *) wire if_id_ena;
     (* max_fanout = "4" *) wire id_exe_ena;
@@ -60,6 +62,8 @@ module Core (
     wire[31:0] exe_mem_fetch_addr;
     wire[31:0] exe_mem_rdata;
 
+    wire[31:0] exe_mult_result;
+
     (* max_fanout = "4" *) wire[31:0] exe_GPR_wdata;
 
     assign if_imem_rdata = IMEM_rdata;
@@ -70,6 +74,8 @@ module Core (
     assign DMEM_addr = id_mem_ask_addr;
     assign DMEM_wdata = id_valid_rt_data;
     assign DMEM_we = id_mem_we;
+
+    assign GPR_wb_data = exe_GPR_wdata;
 
 
     PipelineController pipeline_ctrl_inst(
@@ -206,11 +212,17 @@ module Core (
         .not_change(exe_alu_not_change)
     );
 
+    WallaceMult mult_inst(
+        .opr1(exe_alu_opr1),
+        .opr2(exe_alu_opr2),
+        .result(exe_mult_result)
+    );
+
     Mux4 gpr_wdata_select_inst(
         .in0(exe_mem_rdata),
         .in1(exe_alu_result),
         .in2(exe_pc_out + 8),
-        .in3(32'hffffffff),
+        .in3(exe_mult_result),
         .sel(exe_GPR_wdata_select),
 
         .out(exe_GPR_wdata)

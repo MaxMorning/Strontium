@@ -4,6 +4,7 @@ module SoC (
     input wire reset,
     input wire interrupt,
     
+    output wire[15:0] leds,
     output wire[7:0] o_seg,
     output wire[7:0] o_sel
 );
@@ -19,7 +20,7 @@ module SoC (
     wire[31:0] DMEM_wdata;
     wire DMEM_we;
 
-    wire[31:0] result;
+    wire[31:0] GPR_wb_data;
 
     IMEM imem_inst(
         .a(IMEM_raddr[31:2]),
@@ -38,7 +39,7 @@ module SoC (
         .rdata(DMEM_rdata),
 
         .opr(opr),
-        .result(result)
+        .result(leds)
     );
 
     Core core0(
@@ -54,7 +55,9 @@ module SoC (
         .DMEM_addr(DMEM_addr),
         .fetch_DMEM_addr(fetch_DMEM_addr),
         .DMEM_wdata(DMEM_wdata),
-        .DMEM_we(DMEM_we)
+        .DMEM_we(DMEM_we),
+
+        .GPR_wb_data(GPR_wb_data)
     );
     
     clock clock_inst(
@@ -67,7 +70,7 @@ module SoC (
         .clk(base_clk),
         .reset(reset),
         .cs(1'b1),
-        .i_data(result),
+        .i_data(GPR_wb_data),
         .o_seg(o_seg),
         .o_sel(o_sel)
     );

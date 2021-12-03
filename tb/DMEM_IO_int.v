@@ -9,7 +9,7 @@ module DMEM (
 
 
     input wire[15:0] opr,
-    output wire[31:0] result
+    output wire[15:0] result
 );
     wire[31:0] bram_result;
     wire bram_we = ~ask_addr[31] & we;
@@ -21,7 +21,7 @@ module DMEM (
 
     // assign rdata = bram_result;
 
-    reg[31:0] display_result;
+    reg[15:0] display_result;
     assign result = display_result;
 
     bram bram_inst (
@@ -36,7 +36,7 @@ module DMEM (
     always @(posedge clk) begin
         if (we) begin
             if (ask_addr[31] & ask_addr[3]) begin
-                display_result <= wdata;
+                display_result <= wdata[15:0];
             end
         end
 
