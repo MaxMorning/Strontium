@@ -38,9 +38,8 @@ module IF_ID_reg (
                          (~id_instr_out[31] & ~id_instr_out[29] & id_instr_out[28] & ~id_instr_out[27])
                          |
                          (~id_instr_out[31] & ~id_instr_out[29] & ~id_instr_out[28] & id_instr_out[27] & ~id_instr_out[26]))
-                        |
-                        id_mfc0
-                        );
+                        )
+                        & ~id_mtc0;
     
     assign id_mfc0 = id_instr_out[31:21] == 11'b01000000000;
 

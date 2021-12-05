@@ -9,7 +9,7 @@ module BranchProc (
 );
     wire is_branch_instr = ~instr[31] & ~instr[29] & instr[28] & ~instr[27];
     wire is_jump_instr = ~instr[31] & ~instr[29] & ~instr[28] & instr[27];
-    wire is_jump_register = ~instr[31] & ~instr[29] & ~instr[28] & ~instr[27] & ~instr[26] & ~instr[5] & instr[3] & ~instr[1];
+    wire is_jump_register = ~instr[31] & ~instr[29] & ~instr[28] & ~instr[27] & ~instr[26] & (instr[5:1] == 5'b00100);
 
     wire should_branch = (|(GPR_rs_data ^ GPR_rt_data)) ^~ instr[26];
     

@@ -59,24 +59,7 @@ module soc_tb();
         #3
         reset = 1;
 
-        #19;
-
-        for (check_loop = 0; check_loop < 16; check_loop = check_loop + 1) begin
-            #10;
-            $fdisplay(fout, "pc: %h", pc);
-            $fdisplay(fout, "instr: %h", inst);
-
-            for (i = 0; i < 32; i = i + 1) begin
-                $fdisplay(fout, "regfile%d: %h", i, soc.core0.gpr_inst.array_reg[i]);
-            end
-        end
-
-        pause = 1;
-
-        #302
-        pause = 0;
-
-        #10
+        #29;
         for (check_loop = 0; check_loop < 512; check_loop = check_loop + 1) begin
             $fdisplay(fout, "pc: %h", pc);
             $fdisplay(fout, "instr: %h", inst);

@@ -59,7 +59,6 @@ module Core (
     wire exe_mtc0;
     wire exe_mfc0;
     wire[31:0] exe_cp0_data;
-    wire exe_mfc0;
 
     wire[4:0] exe_GPR_waddr;
     wire[1:0] exe_GPR_wdata_select;
@@ -132,7 +131,7 @@ module Core (
         .pc(id_should_branch ? id_branch_pc : if_pc_out + 4),
 
         .mtc0(exe_mtc0),
-        .Rd(id_instr_out[15:10]),
+        .Rd(id_instr_out[15:11]),
         .wdata(exe_GPR_rt_out),
 
         .exception(if_interruption),
@@ -200,11 +199,11 @@ module Core (
     );
 
     CP0ByPassProc cp0_bypass_proc_inst(
-        .EXE_waddr(exe_instr_out[15:10]),
+        .EXE_waddr(exe_instr_out[15:11]),
         .EXE_wdata(exe_GPR_rt_out),
-        .EXE_we(exe_mfc0),
+        .EXE_we(exe_mtc0),
 
-        .mfc0_addr(id_instr_out[15:10]),
+        .mfc0_addr(id_instr_out[15:11]),
         .mfc0_ori_data(id_ori_cp0_data),
 
         .mfc0_valid_data(id_cp0_data)
@@ -284,9 +283,9 @@ module Core (
 
     Mux4 gpr_wdata_select_inst(
         .in0(exe_mem_rdata),
-        .in1(exe_mfc0 ? exe_cp0_data : exe_alu_result),
+        .in1(exe_alu_result),
         .in2(exe_pc_out + 8),
-        .in3(exe_mult_result),
+        .in3(exe_mfc0 ? exe_cp0_data : exe_mult_result),
         .sel(exe_GPR_wdata_select),
 
         .out(exe_GPR_wdata)

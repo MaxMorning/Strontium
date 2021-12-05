@@ -35,7 +35,7 @@ module SoC (
         .clk(clk),
         .reset(reset),
         .cpu_ena(system_ena),
-        .pause(pause),
+        .out_interruption(pause),
 
         .IMEM_rdata(IMEM_rdata),
         .DMEM_rdata(DMEM_rdata),
