@@ -7,6 +7,8 @@ module IF_ID_reg (
 
     output wire[1:0] ExtSelect_out,
     output wire id_GPR_we,
+    output wire id_mtc0,
+    output wire id_mfc0,
     output wire[4:0] id_GPR_waddr,
     output wire[1:0] id_GPR_wdata_select,
     output wire id_mem_we,
@@ -36,11 +38,17 @@ module IF_ID_reg (
                          (~id_instr_out[31] & ~id_instr_out[29] & id_instr_out[28] & ~id_instr_out[27])
                          |
                          (~id_instr_out[31] & ~id_instr_out[29] & ~id_instr_out[28] & id_instr_out[27] & ~id_instr_out[26]))
+                        |
+                        id_mfc0
                         );
+    
+    assign id_mfc0 = id_instr_out[31:21] == 11'b01000000000;
+
+    assign id_mtc0 = id_instr_out[31:21] == 11'b01000000100;
 
     wire[1:0] GPR_waddr_select;
-    assign GPR_waddr_select[1] = ~id_instr_out[31] & ~id_instr_out[29] & ~id_instr_out[28] & id_instr_out[27] & id_instr_out[26];
-    assign GPR_waddr_select[0] = id_instr_out[30] | (~id_instr_out[29] & ~id_instr_out[28] & ~id_instr_out[27] & ~id_instr_out[26]);
+    assign GPR_waddr_select[1] = ~id_mfc0 & (~id_instr_out[31] & ~id_instr_out[29] & ~id_instr_out[28] & id_instr_out[27] & id_instr_out[26]);
+    assign GPR_waddr_select[0] = ~id_mfc0 & (id_instr_out[30] | (~id_instr_out[29] & ~id_instr_out[28] & ~id_instr_out[27] & ~id_instr_out[26]));
 
     assign id_GPR_waddr = GPR_waddr_select[1] ? // 11 10
                             5'b11111

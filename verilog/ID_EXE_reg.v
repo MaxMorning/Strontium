@@ -8,7 +8,10 @@ module ID_EXE_reg (
     input wire[31:0] ext_result_in, // Src: ImmExt.ExtResult(ID)
     input wire[31:0] id_GPR_rs_in, // Src: RegFile.rdata1(ID)
     input wire[31:0] id_GPR_rt_in, // Src: RegFile.rdata2(ID)
+    input wire[31:0] id_cp0_data,
 
+    input wire id_mtc0_in,
+    input wire id_mfc0_in,
     input wire id_GPR_we_in, // Src: IF_ID_reg.id_GPR_we(ID)
     input wire[4:0] id_GPR_waddr_in, // Src: IF_ID_reg.id_GPR_waddr(ID)
     input wire[1:0] id_GPR_wdata_select_in, // Src: IF_ID_reg.id_GPR_wdata_select(ID)
@@ -19,12 +22,15 @@ module ID_EXE_reg (
     (* max_fanout = "8" *) output reg[31:0] exe_alu_opr1_out,
     (* max_fanout = "8" *) output reg[31:0] exe_alu_opr2_out,
     output wire[3:0] exe_alu_contorl,
+    output reg exe_mfc0_out,
     output reg[31:0] exe_mem_fetch_addr,
+    output reg exe_mtc0_out,
     output reg exe_GPR_we,
     output reg[4:0] exe_GPR_waddr,
     output reg[1:0] exe_GPR_wdata_select,
     output reg[31:0] exe_GPR_rt_out,
-    output reg[31:0] exe_pc_out
+    output reg[31:0] exe_pc_out,
+    output reg[31:0] exe_cp0_data
 );
 
     reg[31:0] exe_instr_out;
@@ -43,6 +49,9 @@ module ID_EXE_reg (
             exe_GPR_wdata_select <= 0;
             exe_GPR_rt_out <= 0;
             exe_GPR_we <= 0;
+            exe_mtc0_out <= 0;
+            exe_mfc0_out <= 0;
+            exe_cp0_data <= 0;
         end
         else if (ena) begin
             exe_pc_out <= id_pc_in;
@@ -53,10 +62,14 @@ module ID_EXE_reg (
 
             exe_mem_fetch_addr <= id_mem_ask_addr;
             
-            exe_GPR_we <= id_GPR_we_in & ena;
+            exe_mtc0_out <= id_mtc0_in;
+            exe_mfc0_out <= id_mfc0_in;
+            exe_GPR_we <= id_GPR_we_in;
             exe_GPR_waddr <= id_GPR_waddr_in;
             exe_GPR_wdata_select <= id_GPR_wdata_select_in;
             exe_GPR_rt_out <= id_GPR_rt_in;
+
+            exe_cp0_data <= id_cp0_data;
         end
     end
 
