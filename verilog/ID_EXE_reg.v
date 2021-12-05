@@ -19,6 +19,7 @@ module ID_EXE_reg (
     input wire[31:0] id_mem_ask_addr,
 
 
+    output reg[31:0] exe_instr_out,
     (* max_fanout = "8" *) output reg[31:0] exe_alu_opr1_out,
     (* max_fanout = "8" *) output reg[31:0] exe_alu_opr2_out,
     output wire[3:0] exe_alu_contorl,
@@ -33,7 +34,6 @@ module ID_EXE_reg (
     output reg[31:0] exe_cp0_data
 );
 
-    reg[31:0] exe_instr_out;
     wire alu_opr1_select = ~id_instr_in[29] & ~id_instr_in[28] & ~id_instr_in[27] & ~id_instr_in[26] & ~id_instr_in[5] & ~id_instr_in[3] & ~id_instr_in[2];
     wire alu_opr2_select = ~id_instr_in[30] & (id_instr_in[29] | id_instr_in[31]);
 

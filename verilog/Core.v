@@ -65,6 +65,7 @@ module Core (
     wire[1:0] exe_GPR_wdata_select;
     wire[31:0] exe_pc_out;
 
+    wire[31:0] exe_instr_out;
     (* max_fanout = "4" *) wire[31:0] exe_alu_opr1;
     (* max_fanout = "4" *) wire[31:0] exe_alu_opr2;
     wire[3:0] exe_alu_contorl;
@@ -249,6 +250,7 @@ module Core (
 
         .id_mem_ask_addr(id_mem_ask_addr),
 
+        .exe_instr_out(exe_instr_out),
         .exe_alu_opr1_out(exe_alu_opr1),
         .exe_alu_opr2_out(exe_alu_opr2),
         .exe_alu_contorl(exe_alu_contorl),

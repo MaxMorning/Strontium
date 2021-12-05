@@ -9,5 +9,5 @@ module CP0ByPassProc(
     output wire[31:0] mfc0_valid_data
 );
 
-    assign mfc0_valid_data = (EXE_we & (mfc0_addr == EXE_waddr)) ? EXE_wdata : mfc0_data;
+    assign mfc0_valid_data = (EXE_we & (mfc0_addr == EXE_waddr)) ? EXE_wdata : mfc0_ori_data;
 endmodule
