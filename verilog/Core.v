@@ -11,9 +11,7 @@ module Core (
     output wire[31:0] DMEM_addr,
     output wire[31:0] fetch_DMEM_addr,
     output wire[31:0] DMEM_wdata,
-    output wire DMEM_we,
-
-    output wire[31:0] GPR_wb_data
+    output wire DMEM_we
 );
     (* max_fanout = "4" *) wire if_id_ena;
     (* max_fanout = "4" *) wire id_exe_ena;
@@ -25,6 +23,8 @@ module Core (
     wire[4:0] if_cause;
     wire[31:0] if_cp0_pc_in;
     wire[31:0] id_ori_cp0_data;
+
+    wire if_ans_exception;
 
     wire[31:0] if_pc_out;
     wire[31:0] if_imem_rdata;
@@ -92,7 +92,6 @@ module Core (
     assign DMEM_we = id_mem_we;
 
     assign if_interruption = out_interruption | if_software_exception;
-    assign GPR_wb_data = exe_GPR_wdata;
 
 
     PipelineController pipeline_ctrl_inst(
@@ -128,16 +127,18 @@ module Core (
         .clk(clk),
         .reset(reset),
 
-        .pc(id_should_branch ? id_branch_pc : if_pc_out + 4),
+        .pc(~if_ans_exception & id_should_branch ? id_branch_pc : if_pc_out + 4),
 
         .mtc0(exe_mtc0),
-        .Rd(id_instr_out[15:11]),
+        .raddr(id_instr_out[15:11]),
+        .waddr(exe_instr_out[15:11]),
         .wdata(exe_GPR_rt_out),
 
         .exception(if_interruption),
         .eret(if_eret),
         .cause(out_interruption ? 5'ha : if_cause),
 
+        .ans_exception(if_ans_exception),
         .rdata(id_ori_cp0_data),
         .exc_addr(if_cp0_pc_in)
     );

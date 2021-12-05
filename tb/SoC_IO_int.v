@@ -20,7 +20,9 @@ module SoC (
     wire[31:0] DMEM_wdata;
     wire DMEM_we;
 
-    wire[31:0] GPR_wb_data;
+    wire[31:0] latest_result;
+    wire jitter_elim_interruption;
+    wire single_cycle_interrupt;
 
     IMEM imem_inst(
         .a(IMEM_raddr[31:2]),
@@ -39,14 +41,15 @@ module SoC (
         .rdata(DMEM_rdata),
 
         .opr(opr),
-        .result(leds)
+        .result(leds),
+        .latest_result(latest_result)
     );
 
     Core core0(
         .clk(clk_cpu),
         .reset(~reset),
         .cpu_ena(1'b1),
-        .out_interruption(interrupt),
+        .out_interruption(single_cycle_interrupt),
 
         .IMEM_rdata(IMEM_rdata),
         .DMEM_rdata(DMEM_rdata),
@@ -55,11 +58,10 @@ module SoC (
         .DMEM_addr(DMEM_addr),
         .fetch_DMEM_addr(fetch_DMEM_addr),
         .DMEM_wdata(DMEM_wdata),
-        .DMEM_we(DMEM_we),
-
-        .GPR_wb_data(GPR_wb_data)
+        .DMEM_we(DMEM_we)
     );
-    
+
+    // assign clk_cpu = base_clk;    
     clock clock_inst(
         .clk_in1(base_clk),
         .clk_out1(clk_cpu),
@@ -70,8 +72,24 @@ module SoC (
         .clk(base_clk),
         .reset(reset),
         .cs(1'b1),
-        .i_data(GPR_wb_data),
+        .i_data(latest_result),
         .o_seg(o_seg),
         .o_sel(o_sel)
+    );
+
+    jitter_proc jitter_elim_inst(
+        .clk(clk_cpu),
+        .reset(~reset),
+        .sig_in(interrupt),
+
+        .valid_sig(jitter_elim_interruption)
+    );
+
+    gen_inter_cycle inter_cycle_inst(
+        .clk(clk_cpu),
+        .reset(~reset),
+        .sig_in(jitter_elim_interruption),
+
+        .single_cycle_interrupt(single_cycle_interrupt)
     );
 endmodule

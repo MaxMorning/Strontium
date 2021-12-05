@@ -2,17 +2,21 @@
 module soc_tb();
     reg clk;
     reg reset;
-    reg[7:0] opr1;
-    reg[7:0] opr2;
+    reg[15:0] opr;
+    reg interrupt;
 
     wire[15:0] result;
+    wire[7:0] o_seg;
+    wire[7:0] o_sel;
 
     SoC soc(
         .base_clk(clk),
         .reset(reset),
-        .opr1(opr1),
-        .opr2(opr2),
-        .result(result)
+        .interrupt(interrupt),
+        .opr(opr),
+        .leds(result),
+        .o_seg(o_seg),
+        .o_sel(o_sel)
     );
 
     initial begin
@@ -26,15 +30,24 @@ module soc_tb();
 //        $dumpfile("result.vcd");
 //        $dumpvars(5);
 
-        reset = 0;
-        opr1 = 62;
-        opr2 = 125;
-
-
-        #6
         reset = 1;
+        opr = 21;
+        interrupt = 0;
 
-//        #10
+        #106
+        reset = 0;
+
+        #300
+        interrupt = 1;
+
+        #80
+        interrupt = 0;
+
+        #4000
+        interrupt = 1;
+
+        #80
+        interrupt = 0;
 
 //        #50000
 //        $finish;

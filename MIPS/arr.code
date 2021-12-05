@@ -1,158 +1,238 @@
+SYSTEM_BOOT:
+b       400780 <PROGRAM_INIT>
+nop
+:
+EXCEPTION_PROCESS:
+mtc0    t0,c0_hwrena
+mfc0    t0,c0_cause
+addi    t0,t0,-32
+beqz    t0,400774 <EXC_RET>
+nop
+mfc0    t0,c0_xcontext
+beqz    t0,400740 <SELF_TRAP>
+nop
+mfc0    t0,$22
+mtc0    t0,c0_epc
+mtc0    zero,c0_xcontext
+b       400774 <EXC_RET>
+nop
+:
+SELF_TRAP:
+mtc0    t1,$21
+lui     t1,0x8000
+lw      t0,0(zero)
+sw      t0,8(t1)
+mfc0    t1,$21
+mfc0    t0,c0_epc
+mtc0    t0,$22
+addi    t0,zero,1
+mtc0    t0,c0_xcontext
+mtc0    t0,c0_status
+mfc0    t0,c0_hwrena
+:
+S_TRAP:
+b       40076c <S_TRAP>
+nop
+:
+EXC_RET:
+mfc0    t0,c0_hwrena
+eret
+nop
+:
+PROGRAM_INIT:
 lui     t0,0x8000
 addi    t1,zero,-1
 sw      t1,4(t0)
 lw      v0,0(t0)
 addi    s8,v0,0
 sll     s8,s8,0x4
-move    s1,v0
-move    s2,zero
-move    v0,s1
+addi    s8,s8,4
+:
+END_INIT:
+move    s3,v0
+li      s2,4
+move    v0,s3
 sll     v0,v0,0x2
 addu    s0,s2,v0
-move    v0,s1
+move    v0,s3
 sll     v0,v0,0x2
-addu    s4,s0,v0
-move    v0,s1
+addu    s1,s0,v0
+move    v0,s3
 sll     v0,v0,0x2
-addu    s5,s4,v0
+addu    s4,s1,v0
 sw      zero,0(s2)
 li      v0,1
 sw      v0,0(s0)
-li      s3,1
-b       4007d0 <main+0xf0>
+li      s5,1
+b       400878 <END_INIT+0xdc>
 nop
-move    v1,s3
+move    v1,s5
 lui     v0,0x3fff
 ori     v0,v0,0xffff
 addu    v0,v1,v0
 sll     v0,v0,0x2
 addu    v0,s2,v0
 lw      v1,0(v0)
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
 addu    v0,s2,v0
-addu    v1,s3,v1
+addu    v1,s5,v1
 sw      v1,0(v0)
-move    v1,s3
+move    v0,s5
+sll     v0,v0,0x2
+addu    v0,s2,v0
+lw      v0,0(v0)
+sw      v0,0(zero)
+move    v1,s5
 lui     v0,0x3fff
 ori     v0,v0,0xffff
 addu    v0,v1,v0
 sll     v0,v0,0x2
 addu    v0,s0,v0
 lw      a0,0(v0)
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x1
-addu    v1,v0,s3
-move    v0,s3
+addu    v1,v0,s5
+move    v0,s5
 sll     v0,v0,0x2
 addu    v0,s0,v0
 addu    v1,a0,v1
 sw      v1,0(v0)
-addiu   s3,s3,1
-slt     v0,s3,s1
-bnez    v0,400760 <main+0x80>
+move    v0,s5
+sll     v0,v0,0x2
+addu    v0,s0,v0
+lw      v0,0(v0)
+sw      v0,0(zero)
+addiu   s5,s5,1
+slt     v0,s5,s3
+bnez    v0,4007e0 <END_INIT+0x44>
 nop
-move    s3,zero
-b       40082c <main+0x14c>
+move    s5,zero
+b       4008fc <END_INIT+0x160>
 nop
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
 addu    v1,s2,v0
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
-addu    v0,s4,v0
+addu    v0,s1,v0
 lw      v1,0(v1)
 sw      v1,0(v0)
-move    v0,s3
+move    v0,s5
+sll     v0,v0,0x2
+addu    v0,s1,v0
+lw      v0,0(v0)
+sw      v0,0(zero)
+move    v0,s5
 sll     v0,v0,0x2
 addu    v1,s0,v0
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
-addu    v0,s5,v0
+addu    v0,s4,v0
 lw      v1,0(v1)
 sw      v1,0(v0)
-addiu   s3,s3,1
-slti    v0,s3,20
-beqz    v0,400844 <main+0x164>
+move    v0,s5
+sll     v0,v0,0x2
+addu    v0,s4,v0
+lw      v0,0(v0)
+sw      v0,0(zero)
+addiu   s5,s5,1
+slti    v0,s5,20
+beqz    v0,400914 <END_INIT+0x178>
 nop
-slt     v0,s3,s1
-bnez    v0,4007e8 <main+0x108>
+slt     v0,s5,s3
+bnez    v0,400890 <END_INIT+0xf4>
 nop
-li      s3,20
-b       400888 <main+0x1a8>
+li      s5,20
+b       40096c <END_INIT+0x1d0>
 nop
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
 addu    v0,s2,v0
 lw      a0,0(v0)
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
 addu    v0,s0,v0
 lw      v1,0(v0)
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
-addu    v0,s4,v0
+addu    v0,s1,v0
 addu    v1,a0,v1
 sw      v1,0(v0)
-addiu   s3,s3,1
-slti    v0,s3,40
-beqz    v0,4008a0 <main+0x1c0>
+move    v0,s5
+sll     v0,v0,0x2
+addu    v0,s1,v0
+lw      v0,0(v0)
+sw      v0,0(zero)
+addiu   s5,s5,1
+slti    v0,s5,40
+beqz    v0,400984 <END_INIT+0x1e8>
 nop
-slt     v0,s3,s1
-bnez    v0,400850 <main+0x170>
+slt     v0,s5,s3
+bnez    v0,400920 <END_INIT+0x184>
 nop
-li      s3,40
-b       4008e4 <main+0x204>
+li      s5,40
+b       4009dc <END_INIT+0x240>
 nop
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
 addu    v0,s2,v0
 lw      a0,0(v0)
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
 addu    v0,s0,v0
 lw      v1,0(v0)
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
-addu    v0,s4,v0
+addu    v0,s1,v0
 mul     v1,a0,v1
 sw      v1,0(v0)
-addiu   s3,s3,1
-slt     v0,s3,s1
-beqz    v0,4008fc <main+0x21c>
+move    v0,s5
+sll     v0,v0,0x2
+addu    v0,s1,v0
+lw      v0,0(v0)
+sw      v0,0(zero)
+addiu   s5,s5,1
+slt     v0,s5,s3
+beqz    v0,4009f4 <END_INIT+0x258>
 nop
-slt     v0,s3,s1
-bnez    v0,4008ac <main+0x1cc>
+slt     v0,s5,s3
+bnez    v0,400990 <END_INIT+0x1f4>
 nop
-li      s3,20
-b       400940 <main+0x260>
+li      s5,20
+b       400a4c <END_INIT+0x2b0>
 nop
-move    v0,s3
+move    v0,s5
 sll     v0,v0,0x2
 addu    v0,s2,v0
 lw      a0,0(v0)
-move    v0,s3
+move    v0,s5
+sll     v0,v0,0x2
+addu    v0,s1,v0
+lw      v1,0(v0)
+move    v0,s5
 sll     v0,v0,0x2
 addu    v0,s4,v0
-lw      v1,0(v0)
-move    v0,s3
-sll     v0,v0,0x2
-addu    v0,s5,v0
 mul     v1,a0,v1
 sw      v1,0(v0)
-addiu   s3,s3,1
-slti    v0,s3,40
-beqz    v0,400958 <main+0x278>
+move    v0,s5
+sll     v0,v0,0x2
+addu    v0,s4,v0
+lw      v0,0(v0)
+sw      v0,0(zero)
+addiu   s5,s5,1
+slti    v0,s5,40
+beqz    v0,400a64 <END_INIT+0x2c8>
 nop
-slt     v0,s3,s1
-bnez    v0,400908 <main+0x228>
+slt     v0,s5,s3
+bnez    v0,400a00 <END_INIT+0x264>
 nop
 li      s2,40
-b       40099c <main+0x2bc>
+b       400abc <END_INIT+0x320>
 nop
 move    v0,s2
 sll     v0,v0,0x2
-addu    v0,s4,v0
+addu    v0,s1,v0
 lw      a0,0(v0)
 move    v0,s2
 sll     v0,v0,0x2
@@ -160,23 +240,28 @@ addu    v0,s0,v0
 lw      v1,0(v0)
 move    v0,s2
 sll     v0,v0,0x2
-addu    v0,s5,v0
+addu    v0,s4,v0
 mul     v1,a0,v1
 sw      v1,0(v0)
+move    v0,s2
+sll     v0,v0,0x2
+addu    v0,s4,v0
+lw      v0,0(v0)
+sw      v0,0(zero)
 addiu   s2,s2,1
-slt     v0,s2,s1
-bnez    v0,400964 <main+0x284>
+slt     v0,s2,s3
+bnez    v0,400a70 <END_INIT+0x2d4>
 nop
-move    v1,s1
+move    v1,s3
 lui     v0,0x3fff
 ori     v0,v0,0xffff
 addu    v0,v1,v0
 sll     v0,v0,0x2
-addu    v0,s5,v0
+addu    v0,s4,v0
 lw      v0,0(v0)
 lui     t0,0x8000
 sw      v0,4(t0)
 :
 END_TRAP:
-b       4009cc <END_TRAP>
+b       400aec <END_TRAP>
 no
