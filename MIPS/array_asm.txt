@@ -265,3 +265,5 @@
 00400aec <END_TRAP>:
   400aec:       1000ffff        b       400aec <END_TRAP>
   400af0:       00000000        nop
+  400af4:       1000fffd        b       400aec <END_TRAP>
+  400af8:       00000000        nop

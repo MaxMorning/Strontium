@@ -155,6 +155,7 @@ int main()
         "sw %[result], 4($t0)\t\n"
         "END_TRAP:\t\n"
         "j END_TRAP\t\n"
+        "j END_TRAP\t\n"
         :
         : // input
         [result]"r"(d[m - 1])

@@ -264,4 +264,6 @@ sw      v0,4(t0)
 :
 END_TRAP:
 b       400aec <END_TRAP>
+nop
+b       400aec <END_TRAP>
 no
