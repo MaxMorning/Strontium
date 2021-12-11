@@ -21,6 +21,9 @@ module SoC (
     wire[31:0] DMEM_wdata;
     wire DMEM_we;
 
+    wire[15:0] toss_cnt;
+    wire[15:0] egg_cnt;
+
     IMEM imem_inst(
         .a(IMEM_raddr[31:2]),
 
@@ -39,7 +42,9 @@ module SoC (
 
         .opr1(opr1),
         .opr2(opr2),
-        .result(result)
+        .toss_cnt(toss_cnt),
+        .egg_cnt(egg_cnt),
+        .is_egg_break(result)
     );
 
     Core core0(
@@ -67,7 +72,7 @@ module SoC (
         .clk(base_clk),
         .reset(reset),
         .cs(1'b1),
-        .i_data({16'h0000, result}),
+        .i_data({toss_cnt, egg_cnt}),
         .o_seg(o_seg),
         .o_sel(o_sel)
     );

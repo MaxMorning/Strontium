@@ -10,7 +10,9 @@ module DMEM (
 
     input wire[7:0] opr1,
     input wire[7:0] opr2,
-    output wire[15:0] result
+    output reg[15:0] toss_cnt,
+    output reg[15:0] egg_cnt,
+    output reg[15:0] is_egg_break
 );
     wire[31:0] bram_result;
     wire bram_we = ~ask_addr[31] & we;
@@ -37,7 +39,23 @@ module DMEM (
 
     always @(posedge clk) begin
         if (we) begin
-            if (ask_addr[31] & ask_addr[3]) begin
+            if (ask_addr[31]) begin
+                case (ask_addr[4:0])
+                    4'h08:
+                        begin
+                            toss_cnt <= wdata;
+                        end
+
+                    4'h0c:
+                        begin
+                            egg_cnt <= wdata;
+                        end
+
+                    4'h10:
+                        begin
+                            is_egg_break <= wdata;
+                        end
+                endcase
                 display_result <= wdata[15:0];
             end
         end
