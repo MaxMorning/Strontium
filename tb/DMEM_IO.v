@@ -41,17 +41,17 @@ module DMEM (
         if (we) begin
             if (ask_addr[31]) begin
                 case (ask_addr[4:0])
-                    4'h08:
+                    5'h08:
                         begin
                             toss_cnt <= wdata;
                         end
 
-                    4'h0c:
+                    5'h0c:
                         begin
                             egg_cnt <= wdata;
                         end
 
-                    4'h10:
+                    5'h10:
                         begin
                             is_egg_break <= wdata;
                         end

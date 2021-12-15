@@ -9,6 +9,7 @@ module soc_tb();
     wire[7:0] o_seg;
     wire[7:0] o_sel;
 
+    integer blank;
     SoC soc(
         .base_clk(clk),
         .reset(reset),
@@ -27,17 +28,30 @@ module soc_tb();
     end
 
     initial begin
+        blank = 0;
+        #1
+        forever begin
+            #10
+            if (soc.core0.IMEM_rdata[31:26] == 6'b000100 || soc.core0.IMEM_rdata[31:26] == 6'b000101 || (soc.core0.IMEM_rdata[31:26] == 6'b000000 && soc.core0.IMEM_rdata[5:0] == 6'b001000)) begin
+                blank = blank + 1;
+            end
+            else if (soc.core0.IMEM_rdata[31:26] == 6'b000000 && soc.core0.IMEM_rdata[5:0] == 6'b001100) begin
+                blank = blank + 2;
+            end
+        end
+    end
+    initial begin
 //        $dumpfile("result.vcd");
 //        $dumpvars(5);
 
         reset = 1;
-        opr = 21;
+        opr = 32;
         interrupt = 0;
 
         #106
         reset = 0;
 
-        #300
+        #30000
         interrupt = 1;
 
         #80

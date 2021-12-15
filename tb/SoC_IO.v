@@ -1,7 +1,6 @@
 module SoC (
     input wire base_clk,
-    input wire[7:0] opr1,
-    input wire[7:0] opr2,
+    input wire[15:0] opr,
     input wire reset,
 
     output wire[15:0] result,
@@ -40,8 +39,8 @@ module SoC (
 
         .rdata(DMEM_rdata),
 
-        .opr1(opr1),
-        .opr2(opr2),
+        .opr1(opr[15:8]),
+        .opr2(opr[7:0]),
         .toss_cnt(toss_cnt),
         .egg_cnt(egg_cnt),
         .is_egg_break(result)
@@ -49,8 +48,9 @@ module SoC (
 
     Core core0(
         .clk(clk_cpu),
-        .reset(reset),
+        .reset(~reset),
         .cpu_ena(1'b1),
+        .out_interruption(1'b0),
 
         .IMEM_rdata(IMEM_rdata),
         .DMEM_rdata(DMEM_rdata),
@@ -65,7 +65,7 @@ module SoC (
     clock clock_inst(
         .clk_in1(base_clk),
         .clk_out1(clk_cpu),
-        .resetn(reset)
+        .resetn(~reset)
     );
 
     seg7x16 seg7_inst(

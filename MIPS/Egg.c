@@ -21,7 +21,7 @@ int main()
         "lw %[floor_sum_reg], 4($t0)\t\n"
         
         "FINISH_ASM:\t\n"
-        "addi $s8, $t2, 0x0\t\n" // set s8 as stack pointer (GCC likes it)
+        "addi $s8, $zero, 0x0\t\n" // set s8 as stack pointer (GCC likes it)
         : // output
         [strength_cnt_reg]"=r"(strength_cnt),
         [floor_sum_reg]"=r"(floor_sum)
