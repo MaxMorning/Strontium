@@ -46,12 +46,15 @@ int main()
         register int middle = (left + right) >> 1;
         ++toss_cnt;
 
-        if (middle <= strength_cnt) {
-            right = middle;
+        if (middle == strength_cnt) {
+            break;
+        }
+        else if (middle < strength_cnt) {
+            left = middle + 1;
             is_egg_break = 0;
         }
         else {
-            left = middle + 1;
+            right = middle - 1;
             ++egg_cnt;
             is_egg_break = 1;
         }
